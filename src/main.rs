@@ -3,6 +3,7 @@ extern crate clap;
 use std::io::prelude::*;
 use std::io::{
     stdin,
+    stderr,
     BufReader,
 };
 use std::process::Command;
@@ -15,6 +16,7 @@ use std::time::Duration;
 use clap::{App, Arg};
 
 fn spawn_server() {
+    writeln!(stderr(), "Can't find racketd, spawning...").unwrap();
     Command::new("/bin/sh")
         .arg("-c")
         .arg("racketd & disown")
