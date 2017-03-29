@@ -5,3 +5,7 @@ authors = ["Jack Fransham <moonfudgeman@hotmail.co.uk>"]
 
 [dependencies]
 clap = "*"
+tempdir = "*"
+serde = "*"
+serde_derive = "*"
+serde_json = "*"
