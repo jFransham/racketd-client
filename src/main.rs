@@ -56,8 +56,10 @@ fn connect() -> Result<TcpStream, std::io::Error> {
 }
 
 fn connect_and_wait() -> Result<TcpStream, std::io::Error> {
-    std::thread::sleep(Duration::from_millis(500));
-    connect()
+    connect().or_else(|e| {
+        std::thread::sleep(Duration::from_millis(500));
+        Err(e)
+    })
 }
 
 fn retry<R, E>(func: fn() -> Result<R, E>, n: usize) -> Result<R, E> {
@@ -151,7 +153,7 @@ fn main() {
 
     let file = o_file.unwrap_or(stdin_file);
 
-    let mut stream = connect().or_else(|_| {
+    let mut stream = retry(connect_and_wait, 3).or_else(|_| {
         spawn_server();
         retry(connect_and_wait, 3)
     }).unwrap();
