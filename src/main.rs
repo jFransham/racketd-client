@@ -158,6 +158,8 @@ fn main() {
         retry(connect_and_wait, 3)
     }).unwrap();
 
+    stream.set_read_timeout(Some(Duration::from_secs(10)));
+
     stream.write(
         serde_json::to_string(
             &ServerInput {
